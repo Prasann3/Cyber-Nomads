@@ -1,7 +1,11 @@
-const express = require("express")
-const uploadController = require('./../controllers/upload.controller')
+import { Router } from "express";
+import { uploadMany } from "../utils/multer.js";
+import { uploadInvoice } from "../controllers/upload.controller.js";
 
-const router = express.Router();
+const router = Router();
+
+export default router;
 
 router.get("upload" , uploadController.getAllUploads)
       .get("upload/:id" , uploadController.getUploadById)
+      .post("/", isLoggedIn, uploadMany, uploadInvoice);

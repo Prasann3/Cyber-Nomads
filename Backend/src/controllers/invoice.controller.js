@@ -104,3 +104,86 @@ export const uploadInvoice = async (req, res) => {
     });
   }
 };
+
+
+export const getUploadsForHumanReview = async (req , res , next) => {
+  
+   try {
+
+         const data = await Invoice.find();
+         res.status(200).json(
+          {
+            status : "Success" ,
+            data
+          }
+         )
+
+   }
+   catch(err) {
+
+        res.status(500).json(
+          {
+            status : "Failed" ,
+            error : err
+          }
+        )
+
+   }
+
+}
+
+
+export const UpdateInvoiceById = async (req , res , next) => {
+
+         try {
+
+         const data = await Invoice.findByIdAndUpdate(req.params.id , req.body);
+         res.status(200).json(
+          {
+            status : "Success" ,
+            data ,
+            message : "Invoice Updated Successfully"
+          }
+         )
+
+   }
+   catch(err) {
+
+        res.status(500).json(
+          {
+            status : "Failed" ,
+            error : err
+          }
+        )
+
+   }
+
+}
+
+
+export const getAllRejectedInvoices = async (req , res , next) => {
+  
+   try {
+
+         const data = await Invoice.find( { "reject.rejected" : true } );
+         res.status(200).json(
+          {
+            status : "Success" ,
+            data
+          }
+         )
+
+   }
+   catch(err) {
+
+        res.status(500).json(
+          {
+            status : "Failed" ,
+            error : err
+          }
+        )
+
+   }
+
+}
+
