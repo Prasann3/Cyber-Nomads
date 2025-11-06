@@ -8,4 +8,4 @@ const UploadSchema = new Schema({
 
 const Upload = mongoose.model('Upload' , UploadSchema)
 
-export default Upload
+export default Upload;
