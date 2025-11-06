@@ -5,12 +5,12 @@ import {
   getInvoiceById,
   getRejectedInvoice,
   uploadInvoice,
-<<<<<<< HEAD
+
   getUploadsForHumanReview, 
-=======
+
   approveItem,
   rejectItem
->>>>>>> 94ae76a (Added approve and rejecteditems)
+
 } from "../controllers/invoice.controller.js";
 
 import {isLoggedIn} from './../middlewares/auth.middlewares.js'
