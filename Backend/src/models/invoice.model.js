@@ -14,6 +14,17 @@ const humanReviewSchema = new mongoose.Schema({
     default: null,
   }
 });
+const rejectSchema = new mongoose.Schema({
+  rejected: {
+    type: Boolean,
+    default: false
+  },
+  reason: {
+    type: String,
+    default: null,
+  }
+
+})
 const invoiceSchema = new Schema(
   {
     vendor: {
@@ -36,6 +47,7 @@ const invoiceSchema = new Schema(
       default: "pending",
     },
     review: humanReviewSchema,
+    reject:rejectSchema,
     fileName: String,
   },
   {
