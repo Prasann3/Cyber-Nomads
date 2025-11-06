@@ -1,9 +1,9 @@
 import express from 'express'
-import Upload from './../models/upload.model'
+import Upload from './../models/upload.model.js'
 import { Queue } from "bullmq";
 import "dotenv/config";
 import Invoice from "../models/invoice.model.js";
-import Upload from "../models/upload.model.js";
+
 
 const invoiceQueue = new Queue("invoice", {
   connection: {
@@ -65,7 +65,7 @@ export const uploadInvoice = async (req, res) => {
   }
 };
 
-exports.getAllUploads = async(req , res , next) => {
+export const getAllUploads = async(req , res , next) => {
     
        try {
 
@@ -96,7 +96,7 @@ exports.getAllUploads = async(req , res , next) => {
 }
 
 
-exports.getUploadById = async (req , res , next) => {
+export const getUploadById = async (req , res , next) => {
     
     try {
 
