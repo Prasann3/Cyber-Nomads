@@ -2,8 +2,17 @@ import mongoose, { Schema } from "mongoose";
 const itemSchema = new mongoose.Schema({
   name: String,
   qty: Number,
-  hsn_sac: String,
   rate: Number,
+});
+const humanReviewSchema = new mongoose.Schema({
+  humanReviewNeeded: {
+    type: Boolean,
+    default: false,
+  },
+  reasonForReview: {
+    type: String,
+    default: null,
+  }
 });
 const invoiceSchema = new Schema(
   {
@@ -16,7 +25,6 @@ const invoiceSchema = new Schema(
     invoiceDetails: {
       number: { type: String },
       date: { type: String },
-      type: { type: String }, // now Mongoose knows invoiceDetails is an object
     },
 
     items: [itemSchema],
@@ -27,14 +35,7 @@ const invoiceSchema = new Schema(
       enum: ["pending", "processed", "rejected"],
       default: "pending",
     },
-    error: {
-      type: Boolean,
-      default: false,
-    },
-    rejectionReason: {
-      type: String,
-      default: null,
-    },
+    review: humanReviewSchema,
     fileName: String,
   },
   {
