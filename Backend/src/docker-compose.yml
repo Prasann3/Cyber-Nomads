@@ -1,0 +1,56 @@
+
+
+services:
+  backend:
+    build: .
+    container_name: backend
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env  # local env, never part of image
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+    volumes:
+      - shared-uploads:/app/uploads
+
+  worker:
+    build: .
+    command: ["npm", "run", "worker"]
+    restart: always
+    env_file:
+      - ./.env
+    depends_on:
+      - redis
+      - mongo
+    networks:
+      - app-network
+    volumes:
+      - shared-uploads:/app/uploads
+
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    networks:
+      - app-network
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  shared-uploads:
