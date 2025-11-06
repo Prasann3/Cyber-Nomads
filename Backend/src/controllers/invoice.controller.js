@@ -1,8 +1,8 @@
 import Invoice from "../models/invoice.model.js";
 import { Queue } from "bullmq";
 import "dotenv/config";
+import { Parser } from "json2csv";
 
-const Invoice = require("../models/invoice.js");
 
 const invoiceQueue = new Queue("invoice", {
   connection: {
@@ -108,6 +108,7 @@ export const uploadInvoice = async (req, res) => {
 };
 
 
+
 export const approveItem = async (req, res) => {
   try {
     const { id } = req.params;
@@ -139,6 +140,36 @@ export const rejectItem = async (req, res) => {
     res.status(200).json({ message: "Invoice rejected successfully", invoice });
   } catch (error) {
     console.error("Error rejecting invoice:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+export const exportAllInvoices = async (req, res) => {
+  try {
+    const invoices = await Invoice.find();
+    if (!invoices || invoices.length === 0) {
+      return res.status(404).json({ message: "No invoices found" });
+    }
+
+    const invoiceData = invoices.map(inv => ({
+      id: inv._id,
+      customerName: inv.customerName,
+      amount: inv.amount,
+      status: inv.status,
+      date: inv.createdAt,
+    }));
+
+    const json2csvParser = new Parser();
+    const csv = json2csvParser.parse(invoiceData);
+
+    res.header("Content-Type", "text/csv");
+    res.attachment("invoices.csv");
+
+    res.send(csv);
+
+  } catch (error) {
+    console.error("Error exporting invoices:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
